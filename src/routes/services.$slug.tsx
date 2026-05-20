@@ -61,7 +61,7 @@ function ServiceDetailPage() {
               </div>
               <h2 className="mt-6 text-2xl md:text-3xl font-bold gradient-text">Why teams choose this service</h2>
               <ul className="mt-6 grid sm:grid-cols-2 gap-4">
-                {service.benefits.map((b) => (
+                {service.benefits.map((b: string) => (
                   <li key={b} className="flex gap-3 text-sm">
                     <span className="mt-0.5 h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0">
                       <Check size={12} />
@@ -79,7 +79,7 @@ function ServiceDetailPage() {
         <div className="container-x">
           <SectionHeader eyebrow="Stack" title="Technologies we use" />
           <div className="flex flex-wrap gap-3 justify-center max-w-3xl mx-auto">
-            {service.tech.map((t) => (
+            {service.tech.map((t: string) => (
               <span key={t} className="glass px-4 py-2 rounded-full text-sm">{t}</span>
             ))}
           </div>
@@ -106,7 +106,7 @@ function ServiceDetailPage() {
         <div className="container-x max-w-3xl">
           <SectionHeader eyebrow="FAQ" title="Common questions" />
           <div className="space-y-3">
-            {service.faq.map((f) => (
+            {service.faq.map((f: {q:string;a:string}) => (
               <Reveal key={f.q}>
                 <details className="glass-card p-5 group">
                   <summary className="cursor-pointer font-semibold flex justify-between items-center list-none">
