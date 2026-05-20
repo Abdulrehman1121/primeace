@@ -5,10 +5,10 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTA } from "@/components/CTA";
 import { MagneticButton } from "@/components/MagneticButton";
-import { getService } from "@/lib/services";
+import { getService, type Service } from "@/lib/services";
 
 export const Route = createFileRoute("/services/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { service: Service } => {
     const service = getService(params.slug);
     if (!service) throw notFound();
     return { service };
