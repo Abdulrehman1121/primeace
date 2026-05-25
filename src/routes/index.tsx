@@ -12,6 +12,8 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTA } from "@/components/CTA";
+import { Tilt3D } from "@/components/Tilt3D";
+import { OrbField } from "@/components/OrbField";
 import { projects } from "@/lib/projects";
 
 export const Route = createFileRoute("/")({
@@ -77,6 +79,9 @@ function HomePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background" />
           <div className="absolute inset-0 tech-grid opacity-25" />
         </motion.div>
+
+        {/* Premium 3D ambient orbs + floating shapes */}
+        <OrbField variant="hero" />
 
         {/* Floating dashboard cards */}
         <div className="absolute inset-0 z-0 hidden lg:block pointer-events-none">
@@ -164,13 +169,15 @@ function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {servicePreview.map((s, i) => (
               <Reveal key={s.title} delay={i * 0.05}>
-                <div className="glass-card p-7 h-full group">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    <s.icon size={22} />
+                <Tilt3D className="h-full">
+                  <div className="glass-card p-7 h-full group">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center text-primary group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-[0_0_30px_oklch(0.68_0.20_245/0.35)]">
+                      <s.icon size={22} />
+                    </div>
+                    <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                </div>
+                </Tilt3D>
               </Reveal>
             ))}
           </div>
@@ -250,16 +257,19 @@ function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {projects.slice(0, 6).map((p, i) => (
               <Reveal key={p.id} delay={i * 0.05}>
-                <div className="glass-card overflow-hidden h-full group">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
+                <Tilt3D className="h-full" max={6}>
+                  <div className="glass-card overflow-hidden h-full group">
+                    <div className="aspect-[4/3] overflow-hidden relative">
+                      <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <div className="p-6">
+                      <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
+                      <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
+                      <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
+                    </div>
                   </div>
-                  <div className="p-6">
-                    <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
-                    <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
-                  </div>
-                </div>
+                </Tilt3D>
               </Reveal>
             ))}
           </div>
@@ -303,14 +313,16 @@ function HomePage() {
           <div className="grid md:grid-cols-3 gap-5">
             {testimonials.map((t, i) => (
               <Reveal key={t.name} delay={i * 0.08}>
-                <div className="glass-card p-7 h-full">
-                  <div className="text-3xl text-primary leading-none">"</div>
-                  <p className="mt-2 text-foreground leading-relaxed">{t.quote}</p>
-                  <div className="mt-6 pt-5 border-t border-border/60">
-                    <div className="font-semibold text-sm">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
+                <Tilt3D className="h-full" max={6}>
+                  <div className="glass-card p-7 h-full">
+                    <div className="text-3xl text-primary leading-none">"</div>
+                    <p className="mt-2 text-foreground leading-relaxed">{t.quote}</p>
+                    <div className="mt-6 pt-5 border-t border-border/60">
+                      <div className="font-semibold text-sm">{t.name}</div>
+                      <div className="text-xs text-muted-foreground">{t.role}</div>
+                    </div>
                   </div>
-                </div>
+                </Tilt3D>
               </Reveal>
             ))}
           </div>
