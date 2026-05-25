@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Reveal } from "./Reveal";
+import { OrbField } from "./OrbField";
 
 export function PageHero({
   eyebrow,
