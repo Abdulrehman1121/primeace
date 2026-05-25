@@ -42,6 +42,8 @@
   --animate-glow-pulse: glowPulse 3s ease-in-out infinite;
   --animate-fade-up: fadeUp 0.8s ease-out forwards;
   --animate-shimmer: shimmer 3s linear infinite;
+  --animate-accordion-down: accordion-down 0.25s cubic-bezier(0.87, 0, 0.13, 1);
+  --animate-accordion-up: accordion-up 0.25s cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 :root {
@@ -93,6 +95,16 @@
 .dark {
   --background: oklch(0.16 0.04 260);
   --foreground: oklch(0.97 0.01 240);
+}
+
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
 }
 
 @keyframes float {
@@ -261,5 +273,18 @@
     z-index: 100;
     transform-origin: 0 50%;
     box-shadow: 0 0 10px oklch(0.68 0.20 245 / 0.8);
+  }
+
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  .rounded-inherit {
+    border-radius: inherit;
   }
 }

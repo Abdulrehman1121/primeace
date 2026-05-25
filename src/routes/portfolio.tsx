@@ -5,6 +5,7 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { CTA } from "@/components/CTA";
 import { projects } from "@/lib/projects";
+import { Tilt } from "@/components/Tilt";
 
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
@@ -41,9 +42,9 @@ function PortfolioPage() {
               <button
                 key={c}
                 onClick={() => setFilter(c)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
                   filter === c
-                    ? "bg-gradient-to-br from-primary to-accent text-primary-foreground"
+                    ? "bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-glow"
                     : "glass text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -59,24 +60,28 @@ function PortfolioPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filtered.map((p, i) => (
               <Reveal key={p.id} delay={(i % 3) * 0.08}>
-                <article className="glass-card overflow-hidden h-full group">
-                  <div className="aspect-[4/3] overflow-hidden relative">
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-5">
-                      <span className="btn-ghost !py-2 !px-4 !text-xs">View Case Study <ArrowRight size={12} /></span>
+                <Tilt>
+                  <article className="glass-card overflow-hidden h-full group relative flex flex-col justify-between">
+                    <div>
+                      <div className="aspect-[4/3] overflow-hidden relative">
+                        <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-5">
+                          <span className="btn-ghost !py-2 !px-4 !text-xs">View Case Study <ArrowRight size={12} /></span>
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
+                        <h3 className="mt-2 text-xl font-bold">{p.title}</h3>
+                        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
-                    <h3 className="mt-2 text-xl font-semibold">{p.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.description}</p>
-                    <div className="mt-4 flex flex-wrap gap-1.5">
+                    <div className="px-6 pb-6 pt-0 flex flex-wrap gap-1.5">
                       {p.tech.map((t) => (
-                        <span key={t} className="text-xs px-2 py-1 rounded-md bg-secondary/60 text-muted-foreground">{t}</span>
+                        <span key={t} className="text-xs px-2 py-0.5 rounded-md bg-secondary/50 text-muted-foreground border border-border/10">{t}</span>
                       ))}
                     </div>
-                  </div>
-                </article>
+                  </article>
+                </Tilt>
               </Reveal>
             ))}
           </div>

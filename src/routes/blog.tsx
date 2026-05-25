@@ -7,6 +7,7 @@ import blog1 from "@/assets/blog-1.jpg";
 import blog2 from "@/assets/blog-2.jpg";
 import blog3 from "@/assets/blog-3.jpg";
 import blog4 from "@/assets/blog-4.jpg";
+import { Tilt } from "@/components/Tilt";
 
 export const Route = createFileRoute("/blog")({
   head: () => ({
@@ -43,23 +44,30 @@ function BlogPage() {
           <div className="grid md:grid-cols-2 gap-6">
             {posts.map((p, i) => (
               <Reveal key={p.title} delay={(i % 2) * 0.08}>
-                <article className="glass-card overflow-hidden h-full group">
-                  <div className="aspect-[16/9] overflow-hidden">
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" width={1024} height={640} loading="lazy" />
-                  </div>
-                  <div className="p-7">
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <span className="text-primary font-semibold tracking-wide uppercase">{p.category}</span>
-                      <span className="h-1 w-1 rounded-full bg-muted-foreground" />
-                      <span className="inline-flex items-center gap-1.5"><Calendar size={12} /> {p.date}</span>
+                <Tilt>
+                  <article className="glass-card overflow-hidden h-full group relative flex flex-col justify-between">
+                    <div>
+                      <div className="aspect-[16/9] overflow-hidden relative">
+                        <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1024} height={640} loading="lazy" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                      </div>
+                      <div className="p-7">
+                        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                          <span className="text-primary font-semibold tracking-wide uppercase">{p.category}</span>
+                          <span className="h-1 w-1 rounded-full bg-muted-foreground" />
+                          <span className="inline-flex items-center gap-1.5"><Calendar size={12} /> {p.date}</span>
+                        </div>
+                        <h2 className="mt-3 text-2xl font-bold leading-tight group-hover:text-primary transition-colors">{p.title}</h2>
+                        <p className="mt-3 text-muted-foreground text-sm leading-relaxed">{p.excerpt}</p>
+                      </div>
                     </div>
-                    <h2 className="mt-3 text-2xl font-semibold leading-tight">{p.title}</h2>
-                    <p className="mt-3 text-muted-foreground">{p.excerpt}</p>
-                    <Link to="/blog" className="mt-5 inline-flex items-center gap-1 text-primary font-medium text-sm">
-                      Read more <ArrowRight size={14} />
-                    </Link>
-                  </div>
-                </article>
+                    <div className="p-7 pt-0">
+                      <Link to="/blog" className="inline-flex items-center gap-1 text-primary font-semibold text-sm group-hover:underline">
+                        Read more <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                    </div>
+                  </article>
+                </Tilt>
               </Reveal>
             ))}
           </div>

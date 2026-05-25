@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { Mail, Phone, MapPin, Send, CheckCircle2 } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
+import { Tilt } from "@/components/Tilt";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -38,6 +39,65 @@ function ContactPage() {
   const [sent, setSent] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    
+    let width = (canvas.width = canvas.offsetWidth);
+    let height = (canvas.height = canvas.offsetHeight);
+    let raf = 0;
+    
+    const particles: { x: number; y: number; r: number; vx: number; vy: number; alpha: number }[] = [];
+    for (let i = 0; i < 35; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        r: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        alpha: Math.random() * 0.5 + 0.2,
+      });
+    }
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height);
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        if (p.x < 0) p.x = width;
+        if (p.x > width) p.x = 0;
+        if (p.y < 0) p.y = height;
+        if (p.y > height) p.y = 0;
+        
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(109, 144, 255, ${p.alpha})`;
+        ctx.shadowBlur = p.r * 2;
+        ctx.shadowColor = "rgba(109, 144, 255, 0.4)";
+        ctx.fill();
+      });
+      ctx.shadowColor = "transparent";
+      raf = requestAnimationFrame(draw);
+    };
+    draw();
+    
+    const handleResize = () => {
+      if (!canvas) return;
+      width = canvas.width = canvas.offsetWidth;
+      height = canvas.height = canvas.offsetHeight;
+    };
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +112,6 @@ function ContactPage() {
     }
     setErrors({});
     setSubmitting(true);
-    // TODO: POST to your server function / CRM here.
     await new Promise((r) => setTimeout(r, 900));
     setSubmitting(false);
     setSent(true);
@@ -66,60 +125,65 @@ function ContactPage() {
         subtitle="Ready to build your next digital product? Let's make it happen with PRIMEACE. Share a few details and we'll be in touch within 24 hours."
       />
 
-      <section className="pb-20">
-        <div className="container-x">
+      <section className="pb-20 relative overflow-hidden">
+        {/* Spatial background canvas */}
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-40" />
+
+        <div className="container-x relative z-10">
           <div className="grid lg:grid-cols-[2fr_1fr] gap-6">
             <Reveal>
-              <div className="glass-card p-8 md:p-10">
-                {sent ? (
-                  <div className="text-center py-16">
-                    <CheckCircle2 size={56} className="mx-auto text-primary" />
-                    <h2 className="mt-5 text-3xl font-bold gradient-text">Message received</h2>
-                    <p className="mt-3 text-muted-foreground">Thanks — a senior team member will reply within 24 hours.</p>
-                  </div>
-                ) : (
-                  <form onSubmit={onSubmit} className="grid sm:grid-cols-2 gap-5" noValidate>
-                    <Field label="Name *" error={errors.name}>
-                      <input name="name" required maxLength={100} className="input" />
-                    </Field>
-                    <Field label="Email *" error={errors.email}>
-                      <input name="email" type="email" required maxLength={255} className="input" />
-                    </Field>
-                    <Field label="Company" error={errors.company}>
-                      <input name="company" maxLength={120} className="input" />
-                    </Field>
-                    <Field label="Phone" error={errors.phone}>
-                      <input name="phone" maxLength={40} className="input" />
-                    </Field>
-                    <Field label="Project type *" error={errors.projectType}>
-                      <select name="projectType" required className="input" defaultValue="">
-                        <option value="" disabled>Select…</option>
-                        {projectTypes.map((p) => <option key={p}>{p}</option>)}
-                      </select>
-                    </Field>
-                    <Field label="Budget range *" error={errors.budget}>
-                      <select name="budget" required className="input" defaultValue="">
-                        <option value="" disabled>Select…</option>
-                        {budgets.map((b) => <option key={b}>{b}</option>)}
-                      </select>
-                    </Field>
-                    <Field label="Timeline *" error={errors.timeline} className="sm:col-span-2">
-                      <select name="timeline" required className="input" defaultValue="">
-                        <option value="" disabled>Select…</option>
-                        {timelines.map((t) => <option key={t}>{t}</option>)}
-                      </select>
-                    </Field>
-                    <Field label="Message *" error={errors.message} className="sm:col-span-2">
-                      <textarea name="message" required rows={5} maxLength={2000} className="input resize-none" placeholder="Tell us about your project, goals, and any constraints…" />
-                    </Field>
-                    <div className="sm:col-span-2">
-                      <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-60">
-                        {submitting ? "Sending…" : <>Send Message <Send size={16} /></>}
-                      </button>
+              <Tilt maxTilt={3}>
+                <div className="glass-card p-8 md:p-10 relative overflow-hidden">
+                  {sent ? (
+                    <div className="text-center py-16">
+                      <CheckCircle2 size={56} className="mx-auto text-primary" />
+                      <h2 className="mt-5 text-3xl font-bold gradient-text">Message received</h2>
+                      <p className="mt-3 text-muted-foreground">Thanks — a senior team member will reply within 24 hours.</p>
                     </div>
-                  </form>
-                )}
-              </div>
+                  ) : (
+                    <form onSubmit={onSubmit} className="grid sm:grid-cols-2 gap-5 relative z-10" noValidate>
+                      <Field label="Name *" error={errors.name}>
+                        <input name="name" required maxLength={100} className="input" />
+                      </Field>
+                      <Field label="Email *" error={errors.email}>
+                        <input name="email" type="email" required maxLength={255} className="input" />
+                      </Field>
+                      <Field label="Company" error={errors.company}>
+                        <input name="company" maxLength={120} className="input" />
+                      </Field>
+                      <Field label="Phone" error={errors.phone}>
+                        <input name="phone" maxLength={40} className="input" />
+                      </Field>
+                      <Field label="Project type *" error={errors.projectType}>
+                        <select name="projectType" required className="input" defaultValue="">
+                          <option value="" disabled>Select…</option>
+                          {projectTypes.map((p) => <option key={p}>{p}</option>)}
+                        </select>
+                      </Field>
+                      <Field label="Budget range *" error={errors.budget}>
+                        <select name="budget" required className="input" defaultValue="">
+                          <option value="" disabled>Select…</option>
+                          {budgets.map((b) => <option key={b}>{b}</option>)}
+                        </select>
+                      </Field>
+                      <Field label="Timeline *" error={errors.timeline} className="sm:col-span-2">
+                        <select name="timeline" required className="input" defaultValue="">
+                          <option value="" disabled>Select…</option>
+                          {timelines.map((t) => <option key={t}>{t}</option>)}
+                        </select>
+                      </Field>
+                      <Field label="Message *" error={errors.message} className="sm:col-span-2">
+                        <textarea name="message" required rows={5} maxLength={2000} className="input resize-none" placeholder="Tell us about your project, goals, and any constraints…" />
+                      </Field>
+                      <div className="sm:col-span-2">
+                        <button type="submit" disabled={submitting} className="btn-primary w-full disabled:opacity-60 cursor-pointer">
+                          {submitting ? "Sending…" : <>Send Message <Send size={16} /></>}
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </div>
+              </Tilt>
             </Reveal>
 
             <Reveal delay={0.1}>

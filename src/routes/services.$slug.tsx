@@ -6,6 +6,8 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { CTA } from "@/components/CTA";
 import { MagneticButton } from "@/components/MagneticButton";
 import { getService, type Service } from "@/lib/services";
+import { Tilt } from "@/components/Tilt";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
 
 export const Route = createFileRoute("/services/$slug")({
   loader: ({ params }): { service: Service } => {
@@ -55,22 +57,24 @@ function ServiceDetailPage() {
       <section className="pb-20">
         <div className="container-x">
           <Reveal>
-            <div className="glass-card p-8 md:p-12 max-w-4xl mx-auto">
-              <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center text-primary">
-                <Icon size={26} />
+            <Tilt>
+              <div className="glass-card p-8 md:p-12 max-w-4xl mx-auto">
+                <div className="h-14 w-14 rounded-2xl bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center text-primary">
+                  <Icon size={26} />
+                </div>
+                <h2 className="mt-6 text-2xl md:text-3xl font-bold gradient-text">Why teams choose this service</h2>
+                <ul className="mt-6 grid sm:grid-cols-2 gap-4">
+                  {service.benefits.map((b: string) => (
+                    <li key={b} className="flex gap-3 text-sm">
+                      <span className="mt-0.5 h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0">
+                        <Check size={12} />
+                      </span>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h2 className="mt-6 text-2xl md:text-3xl font-bold gradient-text">Why teams choose this service</h2>
-              <ul className="mt-6 grid sm:grid-cols-2 gap-4">
-                {service.benefits.map((b: string) => (
-                  <li key={b} className="flex gap-3 text-sm">
-                    <span className="mt-0.5 h-5 w-5 rounded-full bg-primary/20 text-primary flex items-center justify-center shrink-0">
-                      <Check size={12} />
-                    </span>
-                    {b}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            </Tilt>
           </Reveal>
         </div>
       </section>
@@ -105,19 +109,20 @@ function ServiceDetailPage() {
       <section className="pb-20">
         <div className="container-x max-w-3xl">
           <SectionHeader eyebrow="FAQ" title="Common questions" />
-          <div className="space-y-3">
-            {service.faq.map((f: {q:string;a:string}) => (
-              <Reveal key={f.q}>
-                <details className="glass-card p-5 group">
-                  <summary className="cursor-pointer font-semibold flex justify-between items-center list-none">
+          <Reveal>
+            <Accordion type="single" collapsible className="space-y-3">
+              {service.faq.map((f: {q:string;a:string}, idx: number) => (
+                <AccordionItem key={f.q} value={`item-${idx}`} className="glass-card !border-b-0 px-6 py-1">
+                  <AccordionTrigger className="font-semibold text-base py-5 text-foreground hover:no-underline hover:text-primary transition-colors">
                     {f.q}
-                    <span className="text-primary group-open:rotate-45 transition-transform">+</span>
-                  </summary>
-                  <p className="mt-3 text-sm text-muted-foreground">{f.a}</p>
-                </details>
-              </Reveal>
-            ))}
-          </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground leading-relaxed pb-5">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </Reveal>
         </div>
       </section>
 

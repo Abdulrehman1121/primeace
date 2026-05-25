@@ -13,6 +13,9 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTA } from "@/components/CTA";
 import { projects } from "@/lib/projects";
+import { Tilt } from "@/components/Tilt";
+import { HeroVisual3D } from "@/components/HeroVisual3D";
+import { ServiceIcon3D } from "@/components/ServiceIcon3D";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -29,12 +32,12 @@ export const Route = createFileRoute("/")({
 });
 
 const servicePreview = [
-  { icon: Code2, title: "Custom Software", desc: "Bespoke platforms engineered around your workflow." },
-  { icon: Globe, title: "Web Development", desc: "Lightning-fast modern web platforms that convert." },
-  { icon: Smartphone, title: "Mobile Apps", desc: "Native-feel iOS & Android from one codebase." },
-  { icon: Brain, title: "AI & Automation", desc: "Production-ready AI agents, chatbots and workflows." },
-  { icon: Cloud, title: "Cloud & DevOps", desc: "Infrastructure that scales while you sleep." },
-  { icon: Plug, title: "API Integrations", desc: "Connect every tool in your stack — bulletproof." },
+  { slug: "custom-software-development", icon: Code2, title: "Custom Software", desc: "Bespoke platforms engineered around your workflow." },
+  { slug: "web-development", icon: Globe, title: "Web Development", desc: "Lightning-fast modern web platforms that convert." },
+  { slug: "mobile-app-development", icon: Smartphone, title: "Mobile Apps", desc: "Native-feel iOS & Android from one codebase." },
+  { slug: "ai-automation", icon: Brain, title: "AI & Automation", desc: "Production-ready AI agents, chatbots and workflows." },
+  { slug: "cloud-devops", icon: Cloud, title: "Cloud & DevOps", desc: "Infrastructure that scales while you sleep." },
+  { slug: "api-integrations", icon: Plug, title: "API Integrations", desc: "Connect every tool in your stack — bulletproof." },
 ];
 
 const whyUs = [
@@ -73,9 +76,15 @@ function HomePage() {
           style={{ y, opacity }}
           className="absolute inset-0 z-0"
         >
-          <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-50" width={1920} height={1080} />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background" />
-          <div className="absolute inset-0 tech-grid opacity-25" />
+          <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-35" width={1920} height={1080} />
+          {/* 3D Plexus Canvas and Concentric Rings */}
+          <HeroVisual3D />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/10 via-background/60 to-background" />
+          <div className="absolute inset-0 tech-grid opacity-15" />
+          
+          {/* Ambient Glowing Orbs */}
+          <div className="absolute top-[25%] left-[20%] w-[350px] h-[350px] bg-primary/20 blur-[130px] rounded-full pointer-events-none" />
+          <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] bg-accent/15 blur-[150px] rounded-full pointer-events-none" />
         </motion.div>
 
         {/* Floating dashboard cards */}
@@ -164,13 +173,20 @@ function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {servicePreview.map((s, i) => (
               <Reveal key={s.title} delay={i * 0.05}>
-                <div className="glass-card p-7 h-full group">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    <s.icon size={22} />
-                  </div>
-                  <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                </div>
+                <Link to="/services/$slug" params={{ slug: s.slug }} className="block h-full">
+                  <Tilt>
+                    <div className="glass-card p-7 h-full group relative overflow-hidden">
+                      <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                        <ServiceIcon3D slug={s.slug} />
+                      </div>
+                      <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
+                      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                      
+                      {/* Subtle hover background glow */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                    </div>
+                  </Tilt>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -250,16 +266,31 @@ function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {projects.slice(0, 6).map((p, i) => (
               <Reveal key={p.id} delay={i * 0.05}>
-                <div className="glass-card overflow-hidden h-full group">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
-                  </div>
-                  <div className="p-6">
-                    <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
-                    <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
-                  </div>
-                </div>
+                <Link to="/portfolio" className="block h-full">
+                  <Tilt>
+                    <div className="glass-card overflow-hidden h-full group relative flex flex-col justify-between">
+                      <div>
+                        <div className="aspect-[4/3] overflow-hidden relative">
+                          <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-5">
+                            <span className="btn-ghost !py-1.5 !px-3 !text-xs">Explore Case Study <ArrowRight size={10} /></span>
+                          </div>
+                        </div>
+                        <div className="p-6">
+                          <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
+                          <h3 className="mt-2 text-xl font-bold">{p.title}</h3>
+                          <p className="mt-2 text-sm text-muted-foreground line-clamp-2 leading-relaxed">{p.description}</p>
+                        </div>
+                      </div>
+                      
+                      <div className="px-6 pb-6 pt-0 flex flex-wrap gap-1.5">
+                        {p.tech.slice(0, 3).map((t) => (
+                          <span key={t} className="text-[10px] px-2 py-0.5 rounded bg-secondary/40 text-muted-foreground border border-border/10">{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </Tilt>
+                </Link>
               </Reveal>
             ))}
           </div>
@@ -303,14 +334,21 @@ function HomePage() {
           <div className="grid md:grid-cols-3 gap-5">
             {testimonials.map((t, i) => (
               <Reveal key={t.name} delay={i * 0.08}>
-                <div className="glass-card p-7 h-full">
-                  <div className="text-3xl text-primary leading-none">"</div>
-                  <p className="mt-2 text-foreground leading-relaxed">{t.quote}</p>
-                  <div className="mt-6 pt-5 border-t border-border/60">
-                    <div className="font-semibold text-sm">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
+                <Tilt maxTilt={6}>
+                  <div className="glass-card p-7 h-full relative overflow-hidden group">
+                    <div className="text-3xl text-primary leading-none font-serif">"</div>
+                    <p className="mt-2 text-foreground leading-relaxed text-sm md:text-base">{t.quote}</p>
+                    <div className="mt-6 pt-5 border-t border-border/60 flex items-center justify-between">
+                      <div>
+                        <div className="font-semibold text-sm">{t.name}</div>
+                        <div className="text-xs text-muted-foreground mt-0.5">{t.role}</div>
+                      </div>
+                      <span className="text-xs text-primary/30 group-hover:text-primary transition-colors">★ ★ ★ ★ ★</span>
+                    </div>
+                    {/* Glowing highlight */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                   </div>
-                </div>
+                </Tilt>
               </Reveal>
             ))}
           </div>

@@ -4,6 +4,8 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { CTA } from "@/components/CTA";
 import { services } from "@/lib/services";
+import { Tilt } from "@/components/Tilt";
+import { ServiceIcon3D } from "@/components/ServiceIcon3D";
 
 export const Route = createFileRoute("/services")({
   head: () => ({
@@ -33,25 +35,32 @@ function ServicesPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {services.map((s, i) => (
               <Reveal key={s.slug} delay={(i % 3) * 0.08}>
-                <Link to="/services/$slug" params={{ slug: s.slug }} className="block group">
-                  <div className="glass-card p-7 h-full flex flex-col">
-                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                      <s.icon size={22} />
+                <Link to="/services/$slug" params={{ slug: s.slug }} className="block group h-full">
+                  <Tilt>
+                    <div className="glass-card p-7 h-full flex flex-col justify-between relative overflow-hidden">
+                      <div>
+                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                          <ServiceIcon3D slug={s.slug} />
+                        </div>
+                        <h3 className="mt-5 text-xl font-bold">{s.title}</h3>
+                        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.short}</p>
+                        <ul className="mt-4 space-y-1.5 text-sm">
+                          {s.benefits.slice(0, 3).map((b) => (
+                            <li key={b} className="flex items-start gap-2 text-muted-foreground">
+                              <span className="mt-1.5 h-1 w-1 rounded-full bg-primary" /> {b}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="mt-6 pt-5 border-t border-border/60 flex items-center justify-between text-sm">
+                        <span className="text-primary font-semibold">Learn more</span>
+                        <ArrowRight size={16} className="text-primary group-hover:translate-x-1.5 transition-transform" />
+                      </div>
+                      
+                      {/* Subtle hover background highlight */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
                     </div>
-                    <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.short}</p>
-                    <ul className="mt-4 space-y-1.5 text-sm">
-                      {s.benefits.slice(0, 3).map((b) => (
-                        <li key={b} className="flex items-start gap-2 text-muted-foreground">
-                          <span className="mt-1.5 h-1 w-1 rounded-full bg-primary" /> {b}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="mt-6 pt-5 border-t border-border/60 flex items-center justify-between text-sm">
-                      <span className="text-primary font-medium">Learn more</span>
-                      <ArrowRight size={16} className="text-primary group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
+                  </Tilt>
                 </Link>
               </Reveal>
             ))}
