@@ -80,6 +80,9 @@ function HomePage() {
           <div className="absolute inset-0 tech-grid opacity-25" />
         </motion.div>
 
+        {/* Premium 3D ambient orbs + floating shapes */}
+        <OrbField variant="hero" />
+
         {/* Floating dashboard cards */}
         <div className="absolute inset-0 z-0 hidden lg:block pointer-events-none">
           <FloatingCard className="top-32 left-[8%]" delay={0}>
