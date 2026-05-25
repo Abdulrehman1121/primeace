@@ -39,6 +39,8 @@
   --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
 
   --animate-float: float 6s ease-in-out infinite;
+  --animate-float-slow: float 9s ease-in-out infinite;
+  --animate-spin-slow: spin 20s linear infinite;
   --animate-glow-pulse: glowPulse 3s ease-in-out infinite;
   --animate-fade-up: fadeUp 0.8s ease-out forwards;
   --animate-shimmer: shimmer 3s linear infinite;

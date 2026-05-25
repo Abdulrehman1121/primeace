@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { CTA } from "@/components/CTA";
-import { Tilt3D } from "@/components/Tilt3D";
 import { projects } from "@/lib/projects";
-import { Tilt } from "@/components/Tilt";
+import { Floating3DImage } from "@/components/Floating3DImage";
 
 export const Route = createFileRoute("/portfolio")({
   head: () => ({
@@ -36,17 +35,17 @@ function PortfolioPage() {
         subtitle="A selection of recent products built by PRIMEACE — designed, engineered and launched end-to-end."
       />
 
-      <section className="pb-10">
+      <section className="pb-10 relative z-10">
         <div className="container-x">
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-wrap gap-2.5 justify-center bg-secondary/15 p-2 rounded-full border border-border/40 max-w-4xl mx-auto backdrop-blur-md">
             {categories.map((c) => (
               <button
                 key={c}
                 onClick={() => setFilter(c)}
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all cursor-pointer ${
+                className={`px-5 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all cursor-pointer ${
                   filter === c
-                    ? "bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-glow"
-                    : "glass text-muted-foreground hover:text-foreground"
+                    ? "bg-gradient-to-br from-primary to-accent text-primary-foreground shadow-glow scale-105"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/45"
                 }`}
               >
                 {c}
@@ -56,33 +55,55 @@ function PortfolioPage() {
         </div>
       </section>
 
-      <section className="pb-20">
+      <section className="pb-24 relative">
+        <div className="absolute top-[20%] left-0 right-0 h-[500px] bg-accent/5 blur-[140px] pointer-events-none" />
+
         <div className="container-x">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map((p, i) => (
               <Reveal key={p.id} delay={(i % 3) * 0.08}>
-                <Tilt>
-                  <article className="glass-card overflow-hidden h-full group relative flex flex-col justify-between">
+                <Floating3DImage
+                  maxTilt={5}
+                  glow={true}
+                  glowColor="oklch(0.68 0.20 245 / 0.2)"
+                  className="h-full rounded-3xl"
+                >
+                  <article className="glass-card overflow-hidden h-full group relative flex flex-col justify-between border border-primary/10 hover:border-primary/45 transition-colors">
                     <div>
                       <div className="aspect-[4/3] overflow-hidden relative">
-                        <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-5">
-                          <span className="btn-ghost !py-2 !px-4 !text-xs">View Case Study <ArrowRight size={12} /></span>
+                        <img
+                          src={p.image}
+                          alt={p.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          width={1280}
+                          height={800}
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/35 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-5">
+                          <span className="btn-ghost !py-2.5 !px-5 !text-xs">View Case Study <ArrowRight size={12} /></span>
                         </div>
                       </div>
-                      <div className="p-6">
-                        <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
-                        <h3 className="mt-2 text-xl font-bold">{p.title}</h3>
-                        <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.description}</p>
+                      <div className="p-7 space-y-2.5">
+                        <div className="text-[10px] text-primary font-bold tracking-widest uppercase flex items-center gap-1.5">
+                          <Sparkles size={10} className="animate-pulse" />
+                          <span>{p.category}</span>
+                        </div>
+                        <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">{p.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
                       </div>
                     </div>
-                    <div className="px-6 pb-6 pt-0 flex flex-wrap gap-1.5">
+                    <div className="px-7 pb-7 pt-0 flex flex-wrap gap-1.5">
                       {p.tech.map((t) => (
-                        <span key={t} className="text-xs px-2 py-0.5 rounded-md bg-secondary/50 text-muted-foreground border border-border/10">{t}</span>
+                        <span
+                          key={t}
+                          className="text-[10px] px-2.5 py-1 rounded bg-secondary/50 text-muted-foreground border border-border/10 font-medium group-hover:border-primary/20 group-hover:text-white transition-colors"
+                        >
+                          {t}
+                        </span>
                       ))}
                     </div>
                   </article>
-                </Tilt>
+                </Floating3DImage>
               </Reveal>
             ))}
           </div>
