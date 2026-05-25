@@ -16,8 +16,10 @@ export function PageHero({
   return (
     <section className="relative pt-36 pb-20 overflow-hidden">
       <div className="absolute inset-0 tech-grid opacity-30" />
+      <OrbField variant="soft" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/60 to-background" />
       <div className="absolute -top-32 left-1/2 -translate-x-1/2 h-[500px] w-[500px] rounded-full bg-primary/20 blur-[120px]" />
+
 
       <div className="container-x relative">
         {eyebrow && (
