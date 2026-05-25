@@ -257,16 +257,19 @@ function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
             {projects.slice(0, 6).map((p, i) => (
               <Reveal key={p.id} delay={i * 0.05}>
-                <div className="glass-card overflow-hidden h-full group">
-                  <div className="aspect-[4/3] overflow-hidden">
-                    <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
+                <Tilt3D className="h-full" max={6}>
+                  <div className="glass-card overflow-hidden h-full group">
+                    <div className="aspect-[4/3] overflow-hidden relative">
+                      <img src={p.image} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" width={1280} height={800} loading="lazy" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <div className="p-6">
+                      <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
+                      <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
+                      <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
+                    </div>
                   </div>
-                  <div className="p-6">
-                    <div className="text-xs text-primary font-semibold tracking-wide uppercase">{p.category}</div>
-                    <h3 className="mt-2 text-lg font-semibold">{p.title}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground line-clamp-2">{p.description}</p>
-                  </div>
-                </div>
+                </Tilt3D>
               </Reveal>
             ))}
           </div>
