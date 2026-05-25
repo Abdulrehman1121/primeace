@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/Reveal";
 import { CTA } from "@/components/CTA";
+import { Tilt3D } from "@/components/Tilt3D";
 import { projects } from "@/lib/projects";
 import { Tilt } from "@/components/Tilt";
 

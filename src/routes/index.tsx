@@ -12,6 +12,8 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTA } from "@/components/CTA";
+import { Tilt3D } from "@/components/Tilt3D";
+import { OrbField } from "@/components/OrbField";
 import { projects } from "@/lib/projects";
 import { Tilt } from "@/components/Tilt";
 import { HeroVisual3D } from "@/components/HeroVisual3D";
@@ -86,6 +88,9 @@ function HomePage() {
           <div className="absolute top-[25%] left-[20%] w-[350px] h-[350px] bg-primary/20 blur-[130px] rounded-full pointer-events-none" />
           <div className="absolute bottom-[20%] right-[10%] w-[450px] h-[450px] bg-accent/15 blur-[150px] rounded-full pointer-events-none" />
         </motion.div>
+
+        {/* Premium 3D ambient orbs + floating shapes */}
+        <OrbField variant="hero" />
 
         {/* Floating dashboard cards */}
         <div className="absolute inset-0 z-0 hidden lg:block pointer-events-none">
