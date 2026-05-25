@@ -313,14 +313,16 @@ function HomePage() {
           <div className="grid md:grid-cols-3 gap-5">
             {testimonials.map((t, i) => (
               <Reveal key={t.name} delay={i * 0.08}>
-                <div className="glass-card p-7 h-full">
-                  <div className="text-3xl text-primary leading-none">"</div>
-                  <p className="mt-2 text-foreground leading-relaxed">{t.quote}</p>
-                  <div className="mt-6 pt-5 border-t border-border/60">
-                    <div className="font-semibold text-sm">{t.name}</div>
-                    <div className="text-xs text-muted-foreground">{t.role}</div>
+                <Tilt3D className="h-full" max={6}>
+                  <div className="glass-card p-7 h-full">
+                    <div className="text-3xl text-primary leading-none">"</div>
+                    <p className="mt-2 text-foreground leading-relaxed">{t.quote}</p>
+                    <div className="mt-6 pt-5 border-t border-border/60">
+                      <div className="font-semibold text-sm">{t.name}</div>
+                      <div className="text-xs text-muted-foreground">{t.role}</div>
+                    </div>
                   </div>
-                </div>
+                </Tilt3D>
               </Reveal>
             ))}
           </div>
