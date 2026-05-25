@@ -12,6 +12,8 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTA } from "@/components/CTA";
+import { Tilt3D } from "@/components/Tilt3D";
+import { OrbField } from "@/components/OrbField";
 import { projects } from "@/lib/projects";
 
 export const Route = createFileRoute("/")({
