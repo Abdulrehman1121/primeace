@@ -169,13 +169,15 @@ function HomePage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {servicePreview.map((s, i) => (
               <Reveal key={s.title} delay={i * 0.05}>
-                <div className="glass-card p-7 h-full group">
-                  <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                    <s.icon size={22} />
+                <Tilt3D className="h-full">
+                  <div className="glass-card p-7 h-full group">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-primary/30 to-accent/30 flex items-center justify-center text-primary group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500 shadow-[0_0_30px_oklch(0.68_0.20_245/0.35)]">
+                      <s.icon size={22} />
+                    </div>
+                    <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
+                    <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
                   </div>
-                  <h3 className="mt-5 text-xl font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
-                </div>
+                </Tilt3D>
               </Reveal>
             ))}
           </div>
